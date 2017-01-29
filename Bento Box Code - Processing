@@ -1,0 +1,82 @@
+PFont mono;
+PImage happySushi;
+PImage madSushi;
+PImage img;
+
+int counter = 0;
+
+int value;
+
+import processing.serial.*;
+String myString = null;
+Serial myPort;
+
+import processing.sound.*;
+
+SoundFile soundfile;
+
+void setup() {
+  size(400, 300);
+
+  printArray(Serial.list());
+  myPort = new Serial(this, Serial.list()[1], 9600);
+
+  soundfile = new SoundFile(this, "telephone-ring-01a.mp3");
+
+  happySushi = loadImage ("Happy_Sushi.jpg");
+  madSushi = loadImage ("Mad_Sushi.jpg");
+
+  img = happySushi;
+}
+
+void draw() {
+  // updateSerial(); // How to fix this?
+  background (255);
+
+  fill (0, 0, 0); 
+  stroke (25, 25, 25);
+  text ("Be Careful!", 280, 200);
+
+  ellipse (mouseX, mouseY, 20, 10);
+
+  while (myPort.available() > 0) {
+    int tempvalue = myPort.read();
+    if (tempvalue == value) {
+    } else {
+      value = tempvalue;
+      println(value);
+      if (value == 1) {
+        counter++;
+        if (counter < 4)soundfile.play(); 
+        if (counter == 3) {
+          println("mad sushi! counter reset!");
+          img = madSushi;
+        }
+        if (counter == 4) {
+          counter = 0;
+          img = happySushi;
+        }
+      }
+    }
+  }
+
+  image(img, 0, 0);
+}
+
+void keyPressed() {
+  if (key == '\n') {
+    println("key pressed!");
+    counter++;
+
+    if (counter < 4)soundfile.play(); 
+
+    if (counter == 3) {
+      println("mad sushi! counter reset!");
+      img = madSushi;
+    }
+    if (counter == 4) {
+      counter = 0;
+      img = happySushi;
+    }
+  }
+}
