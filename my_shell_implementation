@@ -1,38 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h> // Library for Fork/ Exec
+#include <unistd.h>
 #include <sys/types.h>
 
-// These iare function prototypes
 void displayMenu();
 void mySystem (const char* str);
 
 int main(){
 	boolean = true;
 
-	while(boolean) { // An infinite loop, until it becomes FALSE
+	while(boolean) {
 		int choice;
 
 		displayMenu();
 		fscanf("%d", &choice); // Taking the user input
-
-		// Initializing the expression before each execution
-		// So that it is cleared up entirely
 		expr[0] = 0;
 
-		// Taking the switch case
 		switch (choice){
 
 			// For reading a file
 			case 1:{
-				char name_path [50]; // A variable of type char
+				char name_path [50];
 				printf("Enter the name of the path: \n");
-				scanf("%s",&name_path); // User input
-
-				// In this expression "expr" is the buffer where the output will be redirected to
-				// That's why it should always be cleared, making sure that there is not "trash" in the buffer
-				// "50" is the maximum numbers of bytes (characters) that will be written onto buffer
+				scanf("%s",&name_path);
 				snprintf(expr, 50, "more %s", name_path);
 				break;
 				
@@ -40,7 +31,7 @@ int main(){
 			// For changing file permissions
 			case 2: {
 				char name_path[50];
-				unsigned int permissions; // Variable for permission codes
+				unsigned int permissions;
 
 				printf("Enter the name of the path: \n");
 				fscanf("%s",&name_path);
@@ -166,15 +157,13 @@ int main(){
 				printf("You did not enter the valid input! \n");
 				boolean = false;
 				return 0;
-			} // Default 
+			}
 
 			mySystem(expr);
 
-		} // Switch statement
-	
-	} // While-statement
-
-} // Function
+		}
+	}
+}
 
 void displayMenu(){
 	printf("Enter the number for the choice on the menu: \n");
@@ -195,7 +184,7 @@ void displayMenu(){
 }
 
 void mySystem(const char* str){ 
-	int f = fork(); // Calling the fork Function
+	int f = fork();
 	if (f == 0){ // Child process
 
 		// An execute "execlp" function
